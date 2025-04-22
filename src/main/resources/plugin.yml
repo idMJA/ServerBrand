@@ -1,0 +1,6 @@
+name: ServerBrand
+version: '${version}'
+main: my.mjba.serverBrand.ServerBrand
+api-version: '1.13'
+authors: [iaMJ]
+description: A plugin to change the server brand in F3 screen
