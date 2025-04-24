@@ -1,6 +1,5 @@
 package my.mjba.serverBrand;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Set;
+import java.util.logging.Level;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -41,7 +42,7 @@ public final class ServerBrand extends JavaPlugin implements Listener {
             registerMethod.invoke(this.getServer().getMessenger(), this, channel);
         } catch (ReflectiveOperationException e) {
             getLogger().severe("Failed to register plugin message channel!");
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Exception occurred", e);
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -60,7 +61,7 @@ public final class ServerBrand extends JavaPlugin implements Listener {
                 playerChannelsField.setAccessible(true);
             } catch (ReflectiveOperationException e) {
                 getLogger().severe("Failed to access player channels!");
-                e.printStackTrace();
+                getLogger().log(Level.SEVERE, "Exception occurred", e);
                 getServer().getPluginManager().disablePlugin(this);
                 return;
             }
@@ -76,7 +77,7 @@ public final class ServerBrand extends JavaPlugin implements Listener {
             updateBrand(event.getPlayer());
         } catch (ReflectiveOperationException e) {
             getLogger().severe("Failed to add channel to player!");
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Exception occurred", e);
         }
     }
 
@@ -108,9 +109,5 @@ public final class ServerBrand extends JavaPlugin implements Listener {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.getBytes(buf.readerIndex(), bytes);
         return bytes;
-    }
-
-    public void updateAllPlayers() {
-        Bukkit.getOnlinePlayers().forEach(this::updateBrand);
     }
 }
